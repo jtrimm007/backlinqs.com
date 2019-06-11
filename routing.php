@@ -175,9 +175,9 @@ function CreatePostPage()
 function CreateNewLInkPage()
 {
 
-    var_dump($_POST['linkTitle'] );
-    var_dump($_POST['linkDescription'] );
-    var_dump($_POST['linkUrl'] );
+//    var_dump($_POST['linkTitle'] );
+//    var_dump($_POST['linkDescription'] );
+//    var_dump($_POST['linkUrl'] );
 
     if($_POST['linkTitle'] != null && $_POST['linkDescription'] != null && $_POST['linkUrl'] != null )
     {
