@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+//create post
+<form method="post">
+    <h3>Title</h3>
+    <input name="title" type="text" placeholder="Post Title">
+    <h3>Type</h3>
+    <select name="type">
+        <option value="page">page</option>
+        <option value="blog">blog</option>
+    </select>
+    <h3>Content</h3>
+    <textarea placeholder="Start typing" id="editor" name="content" cols="100"></textarea><br>
+    <button class="btn btn-primary" type="submit">Create Post</button>
+</form>
+
+//Submit linq
+<form method="post">
+    <h3>Title</h3>
+    <input name="linkTitle" type="text" placeholder="Linq Title">
+
+    <h3>Keywords</h3>
+    <input name="linqKeywords" type="text" placeholder="Keywords">
+
+    <h3>Linq URL</h3>
+    <input name="linqUrl" type="text" placeholder="https://example.com/path/to/page">
+
+    <h3>Linq Description</h3>
+    <textarea placeholder="Add your linq description here..." id="editor" name="linkDescription" col="50"></textarea>
+    <button class="btn btn-primary" type="submit">Create Linq</button>
+</form>
+
+//Request Linq Exchange
+<form method="post">
+
+    <h3>Insert Scripts</h3>
+    <textarea placeholder="Insert Scripts" id="editor" name="content" cols="100"></textarea><br>
+    <button class="btn btn-primary" type="submit">Update</button>
+</form>
+
+//Insert scripts form
+<form method="post">
+    <h3>Insert Scripts</h3>
+    <textarea placeholder="Insert Scripts" id="editor" name="content" cols="100"></textarea><br>
+    <button class="btn btn-primary" type="submit">Update</button>
+</form>
+
+
+//Sign-in form
+<form method="post" class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input name="inputEmail" type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input name="inputPassword" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+    <div class="checkbox mb-3">
+        <label>
+            <input type="checkbox" value="remember-me"> Remember me
+        </label>
+    </div>
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+</form>
+
+//Create New User/New user form
+<form method="post" class="form-signin">
+    <h1 class="h3 mb-3 font-weight-normal">Please sign in</h1>
+
+    <label for="firstName" class="sr-only">First Name</label>
+    <input name="firstName" type="email" id="firstName" class="form-control" placeholder="First Name" required="" autofocus="">
+
+    <label for="lastName" class="sr-only">Last Name</label>
+    <input name="lastName" type="email" id="lastName" class="form-control" placeholder="Last Name" required="" autofocus="">
+
+    <label for="inputEmail" class="sr-only">Email address</label>
+    <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required="" autofocus="">
+
+    <label for="inputPassword" class="sr-only">Password</label>
+    <input name="inputPassword" type="password" id="inputPassword" class="form-control" placeholder="Password" required="">
+
+    <label for="confirmPassword" class="sr-only">Confirm Password</label>
+    <input name="confirmPassword" type="email" id="confirmPassword" class="form-control" placeholder="Confirm Password" required="" autofocus="">
+
+    <button class="btn btn-lg btn-primary btn-block" type="submit">Create Account</button>
+</form>
+
+
+</body>
+</html>
