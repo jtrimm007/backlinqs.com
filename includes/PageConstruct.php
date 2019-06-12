@@ -63,8 +63,7 @@ class PageConstruct
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
-
+            <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
             <?php
 //            var_dump($this->pageTitle);
 
@@ -135,7 +134,11 @@ class PageConstruct
             <div class="container-fluid">
                 <?php $this->Header(); ?>
                 <?php $this->Navigation(); ?>
-                <h1><?php echo $this->pageTitle; ?></h1>
+               <?php
+               if(strpos($_SERVER['REQUEST_URI'], '/linq-browser/') !== false)
+               {
+                   echo '<h1>'.$this->pageTitle.'</h1>';
+               } ?>
                 <?php
                 if($this->pageTitle == "Request LinqExchange")
                 {
@@ -223,23 +226,40 @@ class PageConstruct
      */
     public function Header()
     {
-        echo '
-      <header class="container-fluid blog-header py-3">
+        ?>
+      <header class="container-fluid py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
           <div class="col-4 pt-1">
-            <a class="text-muted" href="/blog">Blog</a>
+              <script>
+                  if(readCookie('status') === 'true')
+                  {
+                      console.log(readCookie('status'));
+                      document.write('<a class="p-2 text-muted" href="/?logout=true">logout</a>');
+                  }
+                  else {
+                      document.write('<a class="p-2 text-muted" href="/login">login</a>');
+                  }
+              </script>
+
           </div>
           <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark" href="/home">BackLinqs.com</a>
+            <a class="blog-header-logo text-dark"  href="/">BackLinqs.com</a>
           </div>
           <div class="col-4 d-flex justify-content-end align-items-center">
-            <a class="text-muted" href="#">
-              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
-            </a>
-            <a class="btn btn-sm btn-outline-secondary" href="/new-user">Join us</a>
+              <script>
+                  if(readCookie('status') === 'true')
+                  {
+                      console.log(readCookie('status'));
+                      document.write('<a class="p-2 text-muted" href="/dashboard"><?php echo $_COOKIE['user']; ?></a>');
+                  }
+                  else {
+                      document.write('<a class="text-muted" href="/new-user">join us</a>');
+                  }
+              </script>
+
           </div>
         </div>
-      </header>';
+      </header><?php
     }
 
     /**
@@ -263,25 +283,11 @@ class PageConstruct
     {
         ?><div class="container nav-scroller py-1 mb-2">
         <nav class="nav d-flex justify-content-between">
-            <a class="p-2 text-muted" href="/home">Home</a>
-            <a class="p-2 text-muted" href="/contact">Contact</a>
-            <a class="p-2 text-muted" href="/how-it-works">How it Works</a>
-
-            <a class="p-2 text-muted" href="/about">About</a>
-            <a class="p-2 text-muted" href="/submit-links">Submit Links</a>
-            <a class="p-2 text-muted" href="/linq-browser">Linq Browser</a>
-
-            <script>
-                if(readCookie('status') === 'true')
-                {
-                    console.log(readCookie('status'));
-                    document.write('<a class="p-2 text-muted" href="/dashboard"><?php echo $_COOKIE['user']; ?></a><a class="p-2 text-muted" href="/?logout=true">logout</a>');
-                }
-                else {
-                    document.write('<a class="p-2 text-muted" href="/login">Login</a>');
-                }
-            </script>
-
+            <a class="p-2 text-muted" href="/about">about</a>
+            <a class="p-2 text-muted" href="/how-it-works">how it works</a>
+            <a class="p-2 text-muted" href="/contact">contact</a>
+            <a class="p-2 text-muted" href="/blog">blog</a>
+            <a class="p-2 text-muted" href="/submit-links">submit links</a>
             </nav>
       </div><?php
     }
@@ -498,7 +504,7 @@ class PageConstruct
     {
         //var_dump($_COOKIE['user']);
         $loginUri = "/?status=true&user=".$_COOKIE['user']."";
-        $linqBrowser = "<form method='get'><input type='text' placeholder='Start your search!'><button type='submit'>Search Linqs</button></form><br>";
+        $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input' type='text' placeholder='search for available backlinqs....'><button class='btn' type='submit'>GO</button></form><br>";
 
         if($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == $loginUri)
         {
@@ -510,8 +516,11 @@ class PageConstruct
 
             foreach($selectAll as $item)
             {
+
                 $this->pageTitle = $item['Title'];
-                $this->pageContent = $linqBrowser . $item['Content'];
+
+
+                $this->pageContent = $linqBrowser;
             }
 
         }
