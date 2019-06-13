@@ -14,6 +14,13 @@ function StartApp()
     //check if user wants to logout
     LogOutUserAndRedirectToHome();
 
+    if(isset($_GET['linqSearch']))
+    {
+        $_SESSION['linqSearch'] = $_GET['linqSearch'];
+
+        header("Location: https://backlinqs.com/link-browser");
+        exit();
+    }
 
 
     //var_dump($_SERVER['REQUEST_URI']);
@@ -62,6 +69,7 @@ function StartApp()
 
     //var_dump($_SERVER['REQUEST_URI']);
 
+    //gets a specific page/linq content and information
     if(strpos($_SERVER['REQUEST_URI'], 'linq-browser/') == true)
     {
         $permalink = str_replace("/linq-browser/", "", $_SERVER['REQUEST_URI']);

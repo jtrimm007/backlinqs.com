@@ -63,7 +63,7 @@ class PageConstruct
         <head>
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-            <link href="https://fonts.googleapis.com/css?family=Playfair+Display&display=swap" rel="stylesheet">
+            <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
             <?php
 //            var_dump($this->pageTitle);
 
@@ -209,9 +209,10 @@ class PageConstruct
                 <p><?php //echo $this->GetPostInformationFromDatabasePermalink(); ?></p>
                 <?php
 
-                    if($_SERVER['REQUEST_URI'] == '/linq-browser')
+                    if($_SERVER['REQUEST_URI'] == '/link-browser')
                     {
-                        echo $this->GetLinkInformationFromDatabasePermalink();
+
+                        $this->GetLinkInformationFromDatabasePermalink();
                     }
 
                 ?>
@@ -411,7 +412,19 @@ class PageConstruct
     {
         $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
-        $results = $query->SelectAll('backlinqs_links');
+        $results = array();
+
+
+        if(isset($_SESSION['linqSearch']))
+        {
+            $results = $query->SearchForKeywordInLinks($_SESSION['linqSearch']);
+
+        }
+        else
+        {
+            $results = $query->SelectAll('backlinqs_links');
+
+        }
 
 
         $query->CloseConnection();

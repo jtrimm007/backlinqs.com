@@ -294,4 +294,9 @@ class DatabaseQuery extends DatabaseConnection
         return $this->DatabaseConnection->query("SELECT `ID` FROM `backlinqs_users` WHERE Email = '$email' ");
 
     }
+
+    public function SearchForKeywordInLinks($keywords)
+    {
+        return $this->DatabaseConnection->query("SELECT * FROM `backlinqs_links` WHERE ( Content LIKE '%$keywords%' OR Title LIKE '%$keywords%' )");
+    }
 }
