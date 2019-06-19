@@ -131,8 +131,9 @@ class PageConstruct
     public function Body()
     {
         ?><body>
+        <?php $this->Header(); ?>
             <div class="container-fluid">
-                <?php $this->Header(); ?>
+
                 <?php $this->Navigation(); ?>
                <?php
                if(strpos($_SERVER['REQUEST_URI'], '/linq-browser/') !== false)
@@ -228,9 +229,9 @@ class PageConstruct
     public function Header()
     {
         ?>
-      <header class="container-fluid py-3">
-        <div class="row flex-nowrap justify-content-between align-items-center">
-          <div class="col-4 pt-1">
+      <header class="container-fluid">
+        <div class="row d-flex ">
+          <div class="col-sm-2 text-center">
               <script>
                   if(readCookie('status') === 'true')
                   {
@@ -243,18 +244,18 @@ class PageConstruct
               </script>
 
           </div>
-          <div class="col-4 text-center">
-            <a class="blog-header-logo text-dark"  href="/">BackLinqs.com</a>
+          <div class="col-sm text-center">
+            <h1><a class="blog-header-logo text-dark"  href="/">BackLinqs.com</a></h1>
           </div>
-          <div class="col-4 d-flex justify-content-end align-items-center">
+          <div class="col-sm-2 flex-row-reverse text-center ">
               <script>
                   if(readCookie('status') === 'true')
                   {
                       console.log(readCookie('status'));
-                      document.write('<a class="p-2 text-muted" href="/dashboard"><?php echo $_COOKIE['user']; ?></a>');
+                      document.write('<a class="text-muted d-flex justify-content-center justify-content-lg-end" href="/dashboard"><?php echo $_COOKIE['user']; ?></a>');
                   }
                   else {
-                      document.write('<a class="text-muted" href="/new-user">join us</a>');
+                      document.write('<a class="text-muted p-2 " href="/new-user">join us</a>');
                   }
               </script>
 
@@ -269,7 +270,7 @@ class PageConstruct
     public function Footer()
     {
         ?><footer class="blog-footer">
-            <p>Website Design by: <a href="https://trimwebdesign.com/" target="_blank">Trim Web Design & SEO</a> .</p>
+            <p>Website Design & Developed by: <a href="https://trimwebdesign.com/" target="_blank">Joshua Trimm</a>.</p>
             <p>
                 <a href="#">Back to top</a>
             </p>
@@ -517,7 +518,7 @@ class PageConstruct
     {
         //var_dump($_COOKIE['user']);
         $loginUri = "/?status=true&user=".$_COOKIE['user']."";
-        $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input' type='text' placeholder='search for available backlinqs....'><button class='btn' type='submit'>GO</button></form><br>";
+        $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for available backlinqs....'><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
 
         if($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == $loginUri)
         {
