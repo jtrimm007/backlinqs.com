@@ -6,11 +6,23 @@ p {
 a {
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
     font-size: 1.3rem;
+    color: #5B5B5B;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #000000;
+    text-decoration: none;
 }
 
 button {
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
 
+
+}
+
+.btn-primary {
+    background-color: #121416 !important;
 }
 
 button[type="submit"] {

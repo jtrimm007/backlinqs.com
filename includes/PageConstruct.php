@@ -61,6 +61,16 @@ class PageConstruct
     ?><!doctype html>
         <html lang="en">
         <head>
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142406044-1"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+
+                gtag('config', 'UA-142406044-1');
+            </script>
+
             <meta charset="utf-8">
             <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
             <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
@@ -229,7 +239,7 @@ class PageConstruct
     public function Header()
     {
         ?>
-      <header class="container-fluid">
+      <header class="mt-3 container-fluid">
         <div class="row d-flex ">
           <div class="col-sm-2 text-center">
               <script>
@@ -258,7 +268,6 @@ class PageConstruct
                       document.write('<a class="text-muted p-2 " href="/new-user">join us</a>');
                   }
               </script>
-
           </div>
         </div>
       </header><?php
@@ -283,7 +292,7 @@ class PageConstruct
      */
     public function Navigation()
     {
-        ?><div class="container nav-scroller py-1 mb-2">
+        ?><div class="container nav-scroller py-1 mb-2 mt-lg-5 mt-sm-3">
         <nav class="nav d-flex justify-content-between">
             <a class="p-2 text-muted" href="/about">about</a>
             <a class="p-2 text-muted" href="/how-it-works">how it works</a>
@@ -518,7 +527,7 @@ class PageConstruct
     {
         //var_dump($_COOKIE['user']);
         $loginUri = "/?status=true&user=".$_COOKIE['user']."";
-        $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for available backlinqs....'><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
+        $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for available backlinqs....' required><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
 
         if($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == $loginUri)
         {
@@ -595,24 +604,20 @@ class PageConstruct
             if($user->role <= 4)
             {
                 $dynamicMenu = "
-            <ul>
-              <li><a href=\"/dashboard/account\" >Account</a></li>
-              <li><a href=\"/dashboard/profile\" >Profile</a></li>
-              <li><a href=\"/dashboard/linqs-provided\" >Linqs Provided</a></li>
-              <li><a href=\"/dashboard/linqs-requested\" >Linqs Requested</a></li>
-              <li><a href=\"/dashboard/linq-exchange\" >Linq Exchange</a></li>
-              <li><a href=\"/dashboard/post\" >Post</a></li>
-              <li><a href=\"/dashboard/create-post\" >Create Post</a></li>
-              <li><a href=\"/dashboard/create-user\" >Create User</a></li>
-              <li><a href=\"/dashboard/insert-scripts\" >Insert Scripts</a></li>
-
-
-
+            <ul class='list-unstyled'>
+              <li><a href=\"/dashboard\" >dashboard</a></li>
+              <li><a href=\"/dashboard/account\" >account</a></li>
+              <li><a href=\"/dashboard/profile\" >profile</a></li>
+              <li><a href=\"/dashboard/linqs\" >linqs</a></li>
+              <li><a href=\"/dashboard/post\" >posts</a></li>
+              <li><a href=\"/dashboard/create-post\" >create post</a></li>
+              <li><a href=\"/dashboard/create-user\" >create user</a></li>
+              <li><a href=\"/dashboard/insert-scripts\" >insert scripts</a></li>
            </ul>";
             }
             else{
                 $dynamicMenu = "          
-          <ul>
+          <ul class='list-unstyled'>
               <li><a href=\"/dashboard/account\" >Account</a></li>
               <li><a href=\"/dashboard/profile\" >Profile</a></li>
               <li><a href=\"/dashboard/linqs-provided\" >Linqs Provided</a></li>
@@ -629,8 +634,8 @@ class PageConstruct
                 {
                     return "
  <div class=\"row mb-2\">
-    <div class=\"col-md-3\">
-      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">
+    <div class=\"col-sm-2 ml-sm-0 ml-md-5\">
+      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
         <div class=\"col p-4 d-flex flex-column position-static\">
             ".$dynamicMenu."
         </div>
@@ -651,21 +656,7 @@ class PageConstruct
                     if(isset($_POST['title']))
                     {
                         $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
-//                        var_dump($_POST['title']);
-//                        var_dump($_POST['type']);
-                        $testing = "<form method=\"post\">
-<input name=\"title\" type=\"text\">
-<textarea id=\"editor\" name=\"content\"></textarea>
-<script>
-                    var editor = new Jodit('#editor', 
-   iframe = true
-   );
-</script>
-    <div class=\"row\">
-      <button class=\"btn btn-primary\" type=\"submit\">Submit Linq</button>
-    </div>
-</form>";
-                        //var_dump(filter_var( $testing, FILTER_SANITIZE_SPECIAL_CHARS));
+
 
                         $getPostId = $database->SelectPostIdWithPermalink($_GET['post']);
 
@@ -682,8 +673,8 @@ class PageConstruct
                     $this->pageTitle = 'Editor';
                     return "
  <div class=\"row mb-2\">
-    <div class=\"col-md-3\">
-      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">
+    <div class=\"col-md-2 ml-sm-0 ml-md-5\">
+      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
         <div class=\"col p-4 d-flex flex-column position-static\">
             ".$dynamicMenu."
         </div>
@@ -703,8 +694,8 @@ class PageConstruct
                 {
                     return "
  <div class=\"row mb-2\">
-    <div class=\"col-md-3\">
-      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative\">
+    <div class=\"col-md-2 ml-sm-0 ml-md-5\">
+      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
         <div class=\"col p-4 d-flex flex-column position-static\">
             ".$dynamicMenu."
         </div>
@@ -743,16 +734,16 @@ class PageConstruct
         {
             $form = "<form method=\"post\">
     <h3>Title</h3>
-    <input type=\"text\" name=\"title\" value=\"".$item['Title']."\">
+    <input class='border rounded' type=\"text\" name=\"title\" value=\"".$item['Title']."\">
     <h3>permalink</h3>
-    <input type=\"text\" name=\"permalink\" value=\"".$item['permalink']."\">
+    <input class='border rounded' type=\"text\" name=\"permalink\" value=\"".$item['permalink']."\">
     <h3>Type</h3>
-    <select type='text' name=\"type\">
+    <select class='border rounded' type='text' name=\"type\">
     <option value=\"page\">page</option>
     <option value=\"blog\">blog</option>
     </select>
     <h3>Content</h3>
-    <textarea name=\"content\" id=\"editor\" rows='10' cols=\"100\">".htmlspecialchars($item['Content'])."</textarea>
+    <textarea class='border rounded' name=\"content\" id=\"editor\" rows='10' cols=\"100\">".htmlspecialchars($item['Content'])."</textarea>
         <div class=\"row\">
       <button class=\"btn btn-primary\" type=\"submit\" >Update Post</button>
     </div>
