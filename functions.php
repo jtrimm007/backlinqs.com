@@ -318,6 +318,7 @@ function CreateNewUser($firstName, $lastName, $email, $passHash, $role)
            $newUserId = $each['ID'];
         }
         $query->InsertNewUserRole($newUserId, $role);
+        $query->InsertNewUserInfoId($newUserId);
         $query->CloseConnection();
 
 
@@ -472,4 +473,32 @@ function UpdateUserInfo($id)
 
         $query->CloseConnection();
     }
+}
+
+function CheckUserInfoTable($id)
+{
+    $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+    $userStatus= $query->SelectUserInfo($id);
+
+    $query->CloseConnection();
+    $array = array();
+
+    $arrayPush = array();
+
+    foreach ($userStatus as $each)
+    {
+        array_push($arrayPush, $each);
+    }
+
+    if(!isset($arrayPush[0]['UserID']))
+    {
+        return false;
+    }
+    else{
+        return true;
+    }
+
+
+
 }

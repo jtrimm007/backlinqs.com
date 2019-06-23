@@ -420,28 +420,38 @@ public function GetLinkInformationFromDatabasePermalink()
 {
     $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
+    $resultsArray = array();
     $results = array();
+
 
 
     if(isset($_SESSION['linqSearch']))
     {
         $results = $query->SearchForKeywordInLinks($_SESSION['linqSearch']);
 
-    }
-    else
-    {
-        $results = $query->SelectAll('backlinqs_links');
 
     }
+//    else
+//    {
+//        $results = $query->SelectAll('backlinqs_links');
+//
+//    }
 
-
-    $query->CloseConnection();
-
-    echo '<ul>';
     foreach ($results as $result)
     {
-        //echo '<li><a href="/get-links/' . $result['permalink'] . '">' . $result['Title'] . '</a></li>';
-        echo "<div class=\"row mb-2\">
+        array_push($resultsArray, $result);
+    }
+
+    //var_dump($resultsArray[0]['Title']);
+
+    if(isset($resultsArray[0]['Title']))
+    {
+        echo '<ul>';
+        foreach ($resultsArray as $result)
+        {
+
+            //echo '<li><a href="/get-links/' . $result['permalink'] . '">' . $result['Title'] . '</a></li>';
+            echo "<div class=\"row mb-2\">
     <div class=\"col-md-12\">
       <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
         <div class=\"col p-4 d-flex flex-column position-static\">
@@ -454,9 +464,14 @@ public function GetLinkInformationFromDatabasePermalink()
     </div>
   </div>";
 
+        }
+        echo '</ul>';
     }
-    echo '</ul>';
+    else{
+        echo "<p>There are no results for that keyword. Be the first to submit a linq! <a href='/submit-links'>Start Here</a>! </p>";
+    }
 
+    $query->CloseConnection();
 
 }
 
@@ -593,6 +608,7 @@ public function Dashboard()
         $user->GetUserRole($_COOKIE['user']);
         $postPageList = $this->PostListForDashboard();
         $accountPage = $this->Account();
+        $profilePage = $this->Profile();
 
         if($user->role <= 4)
         {
@@ -611,11 +627,10 @@ public function Dashboard()
         else{
             $dynamicMenu = "          
           <ul class='list-unstyled'>
+              <li><a href=\"/dashboard\" >dashboard</a></li>
               <li><a href=\"/dashboard/account\" >Account</a></li>
               <li><a href=\"/dashboard/profile\" >Profile</a></li>
-              <li><a href=\"/dashboard/linqs-provided\" >Linqs Provided</a></li>
-              <li><a href=\"/dashboard/linqs-requested\" >Linqs Requested</a></li>
-              <li><a href=\"/dashboard/linq-exchange\" >Linq Exchange</a></li>
+              <li><a href=\"/dashboard/linqs\" >linqs</a></li>
            </ul>";
         }
 
@@ -659,6 +674,27 @@ public function Dashboard()
               <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm  position-relative\">
         <div class=\"col p-4 d-flex flex-column position-static\">
         ".$this->pageContent."<br>".$accountPage."
+        </div>
+        </div>
+        </div>
+
+  </div>";
+            }
+            elseif ($_SERVER['REQUEST_URI'] == '/dashboard/profile')
+            {
+                return "
+ <div class=\"row mb-2\">
+    <div class=\"col-sm-2 ml-sm-0 ml-md-5\">
+      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
+        <div class=\"col p-4 d-flex flex-column position-static\">
+            ".$dynamicMenu."
+        </div>
+      </div>
+    </div>
+        <div class=\"col-md-9\">
+              <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm  position-relative\">
+        <div class=\"col p-4 d-flex flex-column position-static\">
+        ".$this->pageContent."<br>".$profilePage."
         </div>
         </div>
         </div>
@@ -777,24 +813,67 @@ public function Account()
 
     $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
-    $getInfo = $database->SelectUserInfo($_COOKIE['user-id']);
+    $getInfo = $database->SelectAllCurrentUserWithId($_COOKIE['user-id']);
 
     $form = '';
 
     foreach ($getInfo as $item)
     {
 
-        $form = "<form method=\"post\">
+        $form = "<p>Email: ".$item['Email']."</p><form method=\"post\">
+    <h3>First Name</h3>
+    <input class='border rounded' type=\"text\" name=\"company\" placeholder='First Name' value=\"".$item['FirstName']."\">
+    <h3>Last Name</h3>
+    <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Last Name' value=\"".$item['LastName']."\">
+    <h3>Change Password</h3>
+    <input class='border rounded' type=\"text\" name=\"youtube\" placeholder='Change your password' value=\"".$item['']."\">
+
+      <button class=\"btn btn-primary\" type=\"submit\" >Update Post</button>
+
+</form>";
+
+    }
+
+
+    $database->CloseConnection();
+
+    return $form;
+}
+
+public function Profile()
+{
+
+    $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+    $getInfo = $database->SelectUserInfo($_COOKIE['user-id']);
+
+    $form = '';
+
+
+    $results = array();
+
+//    foreach ($getInfo as $item)
+//    {
+//        array_push($results, $item);
+//    }
+
+
+        foreach ($getInfo as $item)
+        {
+
+            $form = "<form method=\"post\">
     <h3>Company</h3>
     <input class='border rounded' type=\"text\" name=\"company\" placeholder='Company Name' value=\"".$item['Company']."\">
+    <h3>Website</h3>
+    <input class='border rounded' type=\"text\" name=\"website\" placeholder='Website URL' value=\"".$item['Website']."\">
     <h3>Facebook</h3>
     <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Facebook Profile URL' value=\"".$item['Facebook']."\">
     <h3>YouTube</h3>
-    <input class='border rounded' type=\"text\" name=\"youtube\" placeholder='Facebook Profile URL' value=\"".$item['Youtube']."\">
+    <input class='border rounded' type=\"text\" name=\"youtube\" placeholder='YouTube Profile URL' value=\"".$item['Youtube']."\">
     <h3>Instagram</h3>
-    <input class='border rounded' type=\"text\" name=\"instagram\" placeholder='Facebook Profile URL' value=\"".$item['Youtube']."\">
+    <input class='border rounded' type=\"text\" name=\"instagram\" placeholder='Instagram Profile URL' value=\"".$item['Instagram']."\">
     <h3>Phone</h3>
-    <input class='border rounded' type=\"text\" name=\"phone\" placeholder='Facebook Profile URL' value=\"".$item['Youtube']."\">
+    <input class='border rounded' type=\"text\" name=\"phone\" placeholder='Your phone number' value=\"".$item['Phone']."\">
     <h3>Bio</h3>
     <textarea class='border rounded' name=\"about\" id=\"editor\" rows='10' cols=\"100\">".htmlspecialchars($item['About'])."</textarea>
 
@@ -803,7 +882,31 @@ public function Account()
 
 </form>";
 
-    }
+        }
+//
+//    }
+//    else{
+//        $form = "<form method=\"post\">
+//    <h3>Company</h3>
+//    <input class='border rounded' type=\"text\" name=\"company\" placeholder='Company Name' \">
+//    <h3>Website</h3>
+//    <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Website URL' \">
+//    <h3>Facebook</h3>
+//    <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Facebook Profile URL' \">
+//    <h3>YouTube</h3>
+//    <input class='border rounded' type=\"text\" name=\"youtube\" placeholder='YouTube Profile URL' \">
+//    <h3>Instagram</h3>
+//    <input class='border rounded' type=\"text\" name=\"instagram\" placeholder='Instagram Profile URL' \">
+//    <h3>Phone</h3>
+//    <input class='border rounded' type=\"text\" name=\"phone\" placeholder='Your phone number' \">
+//    <h3>Bio</h3>
+//    <textarea class='border rounded' name=\"about\" id=\"editor\" rows='10' cols=\"100\"></textarea>
+//
+//
+//      <button class=\"btn btn-primary\" type=\"submit\" >Update Post</button>
+//
+//</form>";
+//    }
 
 
     $database->CloseConnection();

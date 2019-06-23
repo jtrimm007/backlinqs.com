@@ -54,9 +54,10 @@ function StartApp()
 
     }
 
-    if($_SERVER['REQUEST_URI'] == '/dashboard/account')
+    if($_SERVER['REQUEST_URI'] == '/dashboard/profile')
     {
         $_SESSION['company'] = $_POST['company'];
+        $_SESSION['website'] = $_POST['website'];
         $_SESSION['facebook'] = $_POST['facebook'];
         $_SESSION['youtube'] = $_POST['youtube'];
         $_SESSION['instagram'] = $_POST['instagram'];
@@ -64,6 +65,15 @@ function StartApp()
         $_SESSION['about'] = $_POST['about'];
 
         UpdateUserInfo($_COOKIE['user-id']);
+    }
+
+    if($_SERVER['REQUEST_URI'] == '/dashboard/account')
+    {
+        $_SESSION['firstName'] = $_POST['firstName'];
+        $_SESSION['lastName'] = $_POST['lastName'];
+
+
+        //UpdateUserInfo($_COOKIE['user-id']);
     }
 
 

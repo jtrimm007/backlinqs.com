@@ -240,6 +240,15 @@ class DatabaseQuery extends DatabaseConnection
         $stmt->execute([$userId, $role]);
     }
 
+    public function InsertNewUserInfoId($userId)
+    {
+        $userId = (int) $userId;
+
+        $sql = "INSERT INTO backlinqs_user_info (UserID) VALUES ('$userId')";
+        $stmt= $this->DatabaseConnection->prepare($sql);
+        $stmt->execute([$userId]);
+    }
+
 
     /**
      * Description: Login query to set user status to 1 i.e. true or logged in.
@@ -294,6 +303,7 @@ class DatabaseQuery extends DatabaseConnection
     public function UpdateUserInfoWithId($id)
     {
         $company = $_SESSION['company'];
+        $website = $_SESSION['website'];
         $facebook = $_SESSION['facebook'];
         $youtube = $_SESSION['youtube'];
         $instagram = $_SESSION['instagram'];
@@ -301,7 +311,7 @@ class DatabaseQuery extends DatabaseConnection
         $about = $_SESSION['about'];
 
 
-        $sql = "UPDATE backlinqs_user_info SET  Company = '$company', Facebook = '$facebook', Youtube = '$youtube', Instagram = '$instagram', Phone = '$phone', About = '$about'  WHERE UserID = '$id'";
+        $sql = "UPDATE backlinqs_user_info SET  Company = '$company', Website = '$website', Facebook = '$facebook', Youtube = '$youtube', Instagram = '$instagram', Phone = '$phone', About = '$about'  WHERE UserID = '$id'";
         $stmt= $this->DatabaseConnection->prepare($sql);
         $stmt->execute([$company, $facebook, $youtube, $instagram, $phone, $about, $id]);
     }
