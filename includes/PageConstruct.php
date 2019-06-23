@@ -27,7 +27,6 @@ public function __construct($page)
     $this->pageTitle = $page[0]['Title'];
     $this->pageContent = html_entity_decode($page[0]['Content'], ENT_QUOTES);
     $this->getLinkUrl = $page[0]['LinkUrl'];
-//        var_dump($page[1]);
     if(isset($page[1]))
     {
         $this->getLinkProviderEmail = $page[1];
@@ -75,7 +74,6 @@ public function Head()
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://fonts.googleapis.com/css?family=Playfair+Display:400,400i,700,700i,900,900i&display=swap" rel="stylesheet">
     <?php
-    //            var_dump($this->pageTitle);
 
 
     ?>
@@ -512,7 +510,6 @@ public function Login($loginPage)
 
     if($this->pageTitle === $loginPage)
     {
-        //var_dump($_POST['inputEmail']);
 
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
         $_SESSION['inputPassword'] = $_POST['inputPassword'];
@@ -525,7 +522,6 @@ public function Login($loginPage)
  */
 public function HomePage()
 {
-    //var_dump($_COOKIE['user']);
     $loginUri = "/?status=true&user=".$_COOKIE['user']."";
     $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for available backlinqs....' required><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
 
@@ -589,8 +585,6 @@ private function PostListForDashboard()
 public function Dashboard()
 {
     $user = new Users(USER, PASS, CONNETIONSTRING);
-    //var_dump($this->pageTitle);
-    //var_dump($this->pageTitle);
     if($this->pageTitle === "Dashboard" || strpos($_SERVER['REQUEST_URI'], 'dashboard' ) == true)
     {
 
@@ -600,7 +594,6 @@ public function Dashboard()
         $postPageList = $this->PostListForDashboard();
         $accountPage = $this->Account();
 
-        //var_dump($user->role);
         if($user->role <= 4)
         {
             $dynamicMenu = "
@@ -783,7 +776,6 @@ public function Account()
 {
 
     $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
-    var_dump($_COOKIE['user-id']);
 
     $getInfo = $database->SelectUserInfo($_COOKIE['user-id']);
 

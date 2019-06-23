@@ -21,7 +21,7 @@ function CheckCurrentUserPostTitlesAndInsert($userId, $postTitle, $content, $typ
     $storedPostTitles = GetAllPostTitles();
 
     $check = CheckPostTitles($postTitle);
-    //var_dump($check);
+
     $dupCheck = CheckPostTitles($postTitle.' DUPLICATE');
 
     if($check == false)
@@ -46,7 +46,6 @@ function CheckCurrentUserLinkTitlesAndInsert($currentUser, $linkUrl, $linkDescri
 {
     $currentUserLinkTitles = SelectAllUserLinkTitles($currentUser);
 
-    var_dump($currentUserLinkTitles);
 
     if(!in_array($linkTitle, $currentUserLinkTitles))
     {
@@ -93,7 +92,6 @@ function GetCurrentPageContentWithPermalink($permalink)
     $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
     $results = $query->SelectContentWithPermalink($permalink);
-    //var_dump($results);
 
     $query->CloseConnection();
 
@@ -105,7 +103,6 @@ function GetCurrentPageContentWithPermalink($permalink)
             array_push($postObjectArray, $result);
         }
     }
-    //var_dump($postObjectArray);
     return $postObjectArray;
 
 }
@@ -136,8 +133,6 @@ function GetCurrentLinkPageContentWithPermalink($permalink)
             array_push($postObjectArray, $result);
         }
     }
-//    var_dump($postObjectArray[0][1]);
-//    var_dump($postObjectArray[0]['Date']);
 
     $getLinqProviderEmail = $query->SelectAllCurrentUserWithId($postObjectArray[0]['UserId']);
 
@@ -194,7 +189,7 @@ function InsertPostQuery($currentUser, $title, $content, $type)
     $insert = $query->InsertPost($currentUser, $title, $content, $type);
 
 
-    //var_dump($insert);
+
     $query->CloseConnection();
 
 }
@@ -244,7 +239,7 @@ function GetAllPostTitles()
 
     $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
     $selectAll = $query->SelectAllPostTitles();
-    //var_dump($selectAll);
+
     $query->CloseConnection();
 
     foreach($selectAll as $item)
@@ -315,7 +310,7 @@ function CreateNewUser($firstName, $lastName, $email, $passHash, $role)
         $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
         $query->CreateUser($firstName, $lastName, $email, HashPass($passHash));
-        //var_dump($email);
+
         $getNewUserId = $query->GetCurrentUserId($email);
 
         foreach ($getNewUserId as $each)

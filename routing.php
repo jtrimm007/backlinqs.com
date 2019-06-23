@@ -28,7 +28,6 @@ function StartApp()
     }
 
 
-    //var_dump($_SERVER['REQUEST_URI']);
     if($_SERVER['REQUEST_URI'] == '/login')
     {
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
@@ -88,7 +87,6 @@ function StartApp()
         $dashboardPages = array("Create Post");
 
         $checkArray = in_array($content[0]['Title'], $dashboardPages);
-        //var_dump($checkArray);
         if($checkArray == true && $user->role > 4)
         {
             header("Location: https://backlinqs.com/dashboard");
@@ -100,16 +98,14 @@ function StartApp()
 
         $permalink = str_replace("/", "", $_SERVER['REQUEST_URI']);
 
-        //var_dump($permalink);
 
         //Gets the content of the current page from the database
         $content = GetCurrentPageContentWithPermalink($permalink);
 
         $dashboardPages = array("Account", "Linqs Provided", "Linqs Requested", "Profile", "Post", "Create Post", "Create User", "Insert Scripts");
 
-        //var_dump($content[0]['Title']);
         $checkArray = in_array($content[0]['Title'], $dashboardPages);
-        //var_dump($checkArray);
+
         if($checkArray == true)
         {
             header("Location: https://backlinqs.com/dashboard");
@@ -130,7 +126,6 @@ function StartApp()
 
     CreateNewUserPage($page);
 
-    //var_dump($_SERVER['REQUEST_URI']);
 
     //returns a view of the page
     return $page;
@@ -152,18 +147,13 @@ function LogOutUserAndRedirectToHome()
 
 function CreatePostPage()
 {
-//    var_dump($_POST['type']);
 
     if($_POST['title'] != null && $_POST['content'] != null && strpos($_SERVER['REQUEST_URI'], 'create-post') == true)
     {
-        //var_dump(CheckUserStatus($_COOKIE['user']));
-        //var_dump($_COOKIE['user']);
         if(CheckUserStatus($_COOKIE['user']) == true)
         {
             $userId = GetCurrentUserIdQuery($_COOKIE['user']);
 
-            var_dump($_POST['type']);
-            //var_dump($_POST['title']);
             //Check current users post to make sure two pages are not created with the same title
             CheckCurrentUserPostTitlesAndInsert($userId, $_POST['title'], $_POST['content'], $_POST['type']);
 
@@ -182,10 +172,6 @@ function CreatePostPage()
 
 function CreateNewLInkPage()
 {
-
-//    var_dump($_POST['linkTitle'] );
-//    var_dump($_POST['linkDescription'] );
-//    var_dump($_POST['linkUrl'] );
 
     if($_POST['linkTitle'] != null && $_POST['linkDescription'] != null && $_POST['linkUrl'] != null )
     {
@@ -239,7 +225,6 @@ function VerifyLoginPage()
     $pass = $_SESSION['inputPassword'];
 
 
-    //var_dump($page->loginPageTitle);
     if($email != null && $pass != null)
     {
 

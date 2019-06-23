@@ -153,7 +153,6 @@ class DatabaseQuery extends DatabaseConnection
      */
     public function InsertPost( $userId, $title, $content, $type)
     {
-        //var_dump($content);
         $toLower = strtolower($title);
         $replace = str_replace(array("_","?","!"," ", "$", "&", "#"), "-", $toLower);
         $permalink = trim($replace);
@@ -164,11 +163,6 @@ class DatabaseQuery extends DatabaseConnection
 
 
         $htmlSpecialChars = htmlspecialchars($content);
-
-//        var_dump($userId);
-//        var_dump($title);
-//        var_dump($content);
-//        var_dump($type);
 
         $currentDate = date("Y-m-d h:i:sa");
         $sql = "INSERT INTO `backlinqs_post` (UserId, Title, Content, DateCreated, permalink, post_type) VALUES ('$userId','$title','$content','$currentDate', '$permalink', '$type')";
@@ -187,7 +181,6 @@ class DatabaseQuery extends DatabaseConnection
 
         $htmlSpecialChars = htmlspecialchars($content);
 
-        //var_dump($htmlEncode2);
 
         $currentDate = date("Y-m-d h:i:sa");
         $sql = "UPDATE `backlinqs_post` SET Title = '".$title."', Content = '".$content."', permalink = '".$permalink."', post_type = '".$type."'WHERE PostId = ".$postId." ";
@@ -241,8 +234,6 @@ class DatabaseQuery extends DatabaseConnection
         $userId = (int) $userId;
         $role = (int) $role;
 
-//        var_dump($userId);
-//        var_dump($role);
 
         $sql = "INSERT INTO backlinqs_user_role (user_id, role_id) VALUES ('$userId','$role' )";
         $stmt= $this->DatabaseConnection->prepare($sql);
