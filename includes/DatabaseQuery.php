@@ -109,13 +109,13 @@ class DatabaseQuery extends DatabaseConnection
     }
 
     /**
-     * Description: DUPLICATE WITH SelectAllCurrentUserWithEmail($currentUserEmail)
+     * Description: Selects all the user info from backlinqs_user_info
      * @param $email
      * @return mixed
      */
-    public function SelectUserInfo($email)
+    public function SelectUserInfo($id)
     {
-        return $this->DatabaseConnection->query('SELECT * FROM `backlinqs_users` WHERE email = ' . $email.' ');
+        return $this->DatabaseConnection->query('SELECT * FROM `backlinqs_user_info` WHERE UserID = ' . $id.' ');
     }
 
     /**
@@ -298,5 +298,20 @@ class DatabaseQuery extends DatabaseConnection
     public function SearchForKeywordInLinks($keywords)
     {
         return $this->DatabaseConnection->query("SELECT * FROM `backlinqs_links` WHERE ( Content LIKE '%$keywords%' OR Title LIKE '%$keywords%' )");
+    }
+
+    public function UpdateUserInfoWithId($id)
+    {
+        $company = $_SESSION['company'];
+        $facebook = $_SESSION['facebook'];
+        $youtube = $_SESSION['youtube'];
+        $instagram = $_SESSION['instagram'];
+        $phone = $_SESSION['phone'];
+        $about = $_SESSION['about'];
+
+
+        $sql = "UPDATE backlinqs_user_info SET  Company = '$company', Facebook = '$facebook', Youtube = '$youtube', Instagram = '$instagram', Phone = '$phone', About = '$about'  WHERE UserID = '$id'";
+        $stmt= $this->DatabaseConnection->prepare($sql);
+        $stmt->execute([$company, $facebook, $youtube, $instagram, $phone, $about, $id]);
     }
 }

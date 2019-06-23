@@ -78,5 +78,27 @@ class Users extends DatabaseQuery
 
     }
 
+    /**
+     * Description: Gets the current user id when the user email is fed into the function
+     * @param $user
+     * @return mixed
+     */
+    function GetCurrentUserIdQuery($user)
+    {
+        $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+        $userStatus= $query->GetCurrentUserId($user);
+
+        foreach ($userStatus as $id)
+        {
+
+            return $id['ID'];
+        }
+
+        $query->CloseConnection();
+
+        //return $userStatus;
+    }
+
 
 }

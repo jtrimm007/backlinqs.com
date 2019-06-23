@@ -342,10 +342,6 @@ function CheckForUniqueUserUponCreation($firstName, $lastName, $email, $passHash
     $emailArray = array();
     $allUsers = GetAllUsers();
 
-//    var_dump($firstName);
-//    var_dump($lastName);
-//    var_dump($email);
-//    var_dump($passHash);
 
     foreach ($allUsers as $user)
     {
@@ -432,22 +428,7 @@ function CheckUserStatusQuery($user)
     return $userStatus;
 }
 
-function GetCurrentUserIdQuery($user)
-{
-    $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
-    $userStatus= $query->GetCurrentUserId($user);
-
-    foreach ($userStatus as $id)
-    {
-
-        return $id['ID'];
-    }
-
-    $query->CloseConnection();
-
-    //return $userStatus;
-}
 
 function CheckUserStatus($user)
 {
@@ -484,4 +465,16 @@ function LogOutUserQuery($user)
 
 
     return $userStatus;
+}
+
+function UpdateUserInfo($id)
+{
+    if(isset( $_SESSION['company']) || isset( $_SESSION['facebook']) || isset( $_SESSION['youtube']) || isset( $_SESSION['instagram']) || isset( $_SESSION['phone']) || isset( $_SESSION['company']))
+    {
+        $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+        $userStatus= $query->UpdateUserInfoWithId($id);
+
+        $query->CloseConnection();
+    }
 }

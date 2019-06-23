@@ -9,6 +9,11 @@ function StartApp()
     $content = '';
     session_start();
 
+    $user = new Users(USER, PASS, CONNETIONSTRING);
+
+    $user->GetUserRole($_COOKIE['user']);
+    setcookie("user-id", $user->GetCurrentUserIdQuery($_COOKIE['user']), time()+3600);
+
 
 
     //check if user wants to logout
@@ -47,27 +52,23 @@ function StartApp()
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
         $_SESSION['inputPassword'] = $_POST['inputPassword'];
 
-//        $isUserLoggedIn = VerifyLoginPage();
-//
-//        if($isUserLoggedIn == true)
-//        {
-//            setcookie("status", "true");
-//            setcookie("user", $_SESSION['inputEmail']);
-//            header("Location: https://backlinqs.com/dashboard");
-//            exit();
-//        }
+
+    }
+
+    if($_SERVER['REQUEST_URI'] == '/dashboard/account')
+    {
+        $_SESSION['company'] = $_POST['company'];
+        $_SESSION['facebook'] = $_POST['facebook'];
+        $_SESSION['youtube'] = $_POST['youtube'];
+        $_SESSION['instagram'] = $_POST['instagram'];
+        $_SESSION['phone'] = $_POST['phone'];
+        $_SESSION['about'] = $_POST['about'];
+
+        UpdateUserInfo($_COOKIE['user-id']);
     }
 
 
-    //var_dump($_COOKIE);
-    //Get permalink
 
-
-    $user = new Users(USER, PASS, CONNETIONSTRING);
-
-    $user->GetUserRole($_COOKIE['user']);
-
-    //var_dump($_SERVER['REQUEST_URI']);
 
     //gets a specific page/linq content and information
     if(strpos($_SERVER['REQUEST_URI'], 'linq-browser/') == true)
@@ -117,8 +118,6 @@ function StartApp()
         //$content = html_entity_decode($content);
     }
 
-    //var_dump($content);
-
 
     //Constructs the page
     $page = new PageConstruct($content);
@@ -127,6 +126,7 @@ function StartApp()
 
     CreatePostPage();
     CreateNewLInkPage();
+
 
     CreateNewUserPage($page);
 
@@ -222,11 +222,6 @@ function CreateNewUserPage($page)
         $email = $_SESSION['inputEmail'];
         $pass = $_SESSION['inputPassword'];
 
-//        var_dump($firstName);
-//        var_dump($lastName);
-//        var_dump($email);
-//        var_dump($pass);
-//
 
         if($firstName != NULL && $lastName != NULL && $email != NULL && $pass != NULL)
         {
