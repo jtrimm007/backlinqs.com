@@ -606,6 +606,8 @@ public function Dashboard()
         $dynamicMenu = '';
         $status = $user->GetUserStatus($_COOKIE['user']);
         $user->GetUserRole($_COOKIE['user']);
+        $user->GetCurrentUserIdQuery($_COOKIE['user']);
+
         $postPageList = $this->PostListForDashboard();
         $accountPage = $this->Account();
         $profilePage = $this->Profile();
@@ -843,20 +845,15 @@ public function Account()
 public function Profile()
 {
 
-    $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+    if($_SERVER['REQUEST_URI'] == '/dashboard/profile' )
+    {
+        $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
 
-    $getInfo = $database->SelectUserInfo($_COOKIE['user-id']);
+        $getInfo = $database->SelectUserInfo($_COOKIE['user-id']);
 
-    $form = '';
+        $form = '';
 
-
-    $results = array();
-
-//    foreach ($getInfo as $item)
-//    {
-//        array_push($results, $item);
-//    }
-
+        $results = array();
 
         foreach ($getInfo as $item)
         {
@@ -883,35 +880,12 @@ public function Profile()
 </form>";
 
         }
-//
-//    }
-//    else{
-//        $form = "<form method=\"post\">
-//    <h3>Company</h3>
-//    <input class='border rounded' type=\"text\" name=\"company\" placeholder='Company Name' \">
-//    <h3>Website</h3>
-//    <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Website URL' \">
-//    <h3>Facebook</h3>
-//    <input class='border rounded' type=\"text\" name=\"facebook\" placeholder='Facebook Profile URL' \">
-//    <h3>YouTube</h3>
-//    <input class='border rounded' type=\"text\" name=\"youtube\" placeholder='YouTube Profile URL' \">
-//    <h3>Instagram</h3>
-//    <input class='border rounded' type=\"text\" name=\"instagram\" placeholder='Instagram Profile URL' \">
-//    <h3>Phone</h3>
-//    <input class='border rounded' type=\"text\" name=\"phone\" placeholder='Your phone number' \">
-//    <h3>Bio</h3>
-//    <textarea class='border rounded' name=\"about\" id=\"editor\" rows='10' cols=\"100\"></textarea>
-//
-//
-//      <button class=\"btn btn-primary\" type=\"submit\" >Update Post</button>
-//
-//</form>";
-//    }
 
+        $database->CloseConnection();
 
-    $database->CloseConnection();
+        return $form;
+    }
 
-    return $form;
 }
 
 }

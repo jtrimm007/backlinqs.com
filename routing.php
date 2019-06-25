@@ -9,10 +9,16 @@ function StartApp()
     $content = '';
     session_start();
 
-    $user = new Users(USER, PASS, CONNETIONSTRING);
+    if($_COOKIE['status'] == 'true')
+    {
+        $user = new Users(USER, PASS, CONNETIONSTRING);
 
-    $user->GetUserRole($_COOKIE['user']);
-    setcookie("user-id", $user->GetCurrentUserIdQuery($_COOKIE['user']), time()+3600);
+        $user->GetUserRole($_COOKIE['user']);
+        $user->GetCurrentUserIdQuery($_COOKIE['user']);
+
+        setcookie("user-id", $user->userId, time()+3600);
+    }
+
 
 
 

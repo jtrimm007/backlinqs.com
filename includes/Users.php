@@ -9,7 +9,7 @@ class Users extends DatabaseQuery
     private $pass;
     public $role;
     public $loginStatus;
-
+    public $userId;
 
     public function __construct($UserName, $Password, $ConnectionString)
     {
@@ -22,14 +22,13 @@ class Users extends DatabaseQuery
 
         $results = $query->SelectAllCurrentUserWithEmail($email);
 
-
         $query->CloseConnection();
 
         echo '<ul>';
+
         foreach ($results as $result)
         {
             echo '<li><a href="?id=' . $result['PostId'] . '">' . $result['Title'] . '</a></li>';
-
         }
         echo '</ul>';
     }
@@ -56,8 +55,6 @@ class Users extends DatabaseQuery
 
         $query->CloseConnection();
 
-
-
         foreach($userStatus as $item)
         {
             if( $item['Status'][0] == "0")
@@ -75,7 +72,6 @@ class Users extends DatabaseQuery
             }
             break;
         }
-
     }
 
     /**
@@ -92,13 +88,10 @@ class Users extends DatabaseQuery
         foreach ($userStatus as $id)
         {
 
-            return $id['ID'];
+            $this->userId = $id['ID'];
         }
 
         $query->CloseConnection();
 
-        //return $userStatus;
     }
-
-
 }
