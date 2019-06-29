@@ -321,6 +321,10 @@ function CreateNewUser($firstName, $lastName, $email, $passHash, $role)
         $query->InsertNewUserInfoId($newUserId);
         $query->CloseConnection();
 
+        $user = new Users(USER, PASS, CONNETIONSTRING);
+
+        $user->VerifyEmail($email);
+
 
 }
 

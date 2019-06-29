@@ -14,9 +14,8 @@ function StartApp()
         $user = new Users(USER, PASS, CONNETIONSTRING);
 
         $user->GetUserRole($_COOKIE['user']);
-        $user->GetCurrentUserIdQuery($_COOKIE['user']);
+        $user->SetCurrentUserIdQuery($_COOKIE['user']);
 
-        setcookie("user-id", $user->userId, time()+3600);
     }
 
 
@@ -56,6 +55,7 @@ function StartApp()
         $_SESSION['lastName'] = $_POST['lastName'];
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
         $_SESSION['inputPassword'] = $_POST['inputPassword'];
+        $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
 
 
     }
@@ -164,14 +164,15 @@ function LogOutUserAndRedirectToHome()
 function CreatePostPage()
 {
 
-    if($_POST['title'] != null && $_POST['content'] != null && strpos($_SERVER['REQUEST_URI'], 'create-post') == true)
+
+    if($_POST['title'] != null && $_POST['content'] != null && strpos($_SERVER['REQUEST_URI'], 'create-post') !== false)
     {
         if(CheckUserStatus($_COOKIE['user']) == true)
         {
-            $userId = GetCurrentUserIdQuery($_COOKIE['user']);
+
 
             //Check current users post to make sure two pages are not created with the same title
-            CheckCurrentUserPostTitlesAndInsert($userId, $_POST['title'], $_POST['content'], $_POST['type']);
+            CheckCurrentUserPostTitlesAndInsert($_COOKIE['user-id'], $_POST['title'], $_POST['content'], $_POST['type']);
 
         }
         else
@@ -194,10 +195,10 @@ function CreateNewLInkPage()
 
         if(CheckUserStatus($_COOKIE['user']) == true)
         {
-            $userId = GetCurrentUserIdQuery($_COOKIE['user']);
+
 
             //Check current users post to make sure two pages are not created with the same title
-            CheckCurrentUserLinkTitlesAndInsert($userId,  $_POST['linkUrl'],  $_POST['linkDescription'], $_POST['linkTitle']);
+            CheckCurrentUserLinkTitlesAndInsert($_COOKIE['user-id'],  $_POST['linkUrl'],  $_POST['linkDescription'], $_POST['linkTitle']);
 
 
         }

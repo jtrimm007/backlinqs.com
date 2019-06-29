@@ -3,6 +3,9 @@
 
 class Users extends DatabaseQuery
 {
+
+
+
     public $email;
     public $firstName;
     public $lastName;
@@ -88,10 +91,48 @@ class Users extends DatabaseQuery
         foreach ($userStatus as $id)
         {
 
-            $this->userId = $id['ID'];
+            return $id['ID'];
+
         }
 
         $query->CloseConnection();
+
+    }
+
+    function SetCurrentUserIdQuery($user)
+    {
+        $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+        $userStatus= $query->GetCurrentUserId($user);
+
+        foreach ($userStatus as $id)
+        {
+
+            $this->userId = $id['ID'];
+            setcookie('user-id', $this->userId, time()+3600);
+
+        }
+
+        $query->CloseConnection();
+
+    }
+
+    public function VerifyEmail($email)
+    {
+        $mail = new \PHPMailer\PHPMailer\PHPMailer();
+        $mail->isHTML(true);
+        $mail->setFrom('joshua@backlinqs.com', 'Joshua');
+        $mail->addAddress($email, 'New User');
+        $mail->Subject  = 'Welcome to Backlinqs.com, Please Verify Account';
+        $mail->Body     = 'Thank you for joining us, we are happy to have you! Please <a href="https://backlinqs.com/login" target="_blank">click here</a> to verify your account.';
+        if(!$mail->send()) {
+            //echo 'Message was not sent.';
+            //echo 'Mailer error: ' . $mail->ErrorInfo;
+        } else {
+//            header("Location: https://backlinqs.com/verify-account");
+//            exit();
+        }
+
 
     }
 }
