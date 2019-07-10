@@ -1,6 +1,7 @@
 
 p {
     font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+    font-size: 1.0em;
 }
 
 a {
@@ -23,6 +24,7 @@ button {
 
 .btn-primary {
     background-color: #121416 !important;
+    color: #ffffff !important;
 }
 
 button[type="submit"] {
@@ -60,6 +62,14 @@ textarea {
 
 .mr-left-15 {
     margin-left: 15%;
+}
+
+.mr-bottom-10 {
+    margin-bottom: 10%;
+}
+
+.mr-bottom-5 {
+    margin-bottom: 5%;
 }
 
 

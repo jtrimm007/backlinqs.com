@@ -38,6 +38,15 @@ class DatabaseQuery extends DatabaseConnection
         return $this->DatabaseConnection->query('SELECT * FROM backlinqs_post WHERE PostId = ' . $PostId . ' ');
     }
 
+    /**
+     * Description: Select all the blog post
+     * @return mixed
+     */
+    public function SelectAllBlogPost()
+    {
+        return $this->DatabaseConnection->query('SELECT * FROM `backlinqs_post` WHERE `post_type` = "blog"');
+    }
+
     public function SelectPostIdWithPermalink($permalink)
     {
         return $this->DatabaseConnection->query('SELECT PostId FROM backlinqs_post WHERE permalink = "' . $permalink . '" ');
@@ -53,6 +62,7 @@ class DatabaseQuery extends DatabaseConnection
     {
         return $this->DatabaseConnection->query('SELECT * FROM `backlinqs_post` WHERE `permalink` = "' . $permalink . '" ');
     }
+
 
     /**
      * Description: Selects title and content for the home page based upon home page permalink
@@ -297,7 +307,7 @@ class DatabaseQuery extends DatabaseConnection
 
     public function SearchForKeywordInLinks($keywords)
     {
-        return $this->DatabaseConnection->query("SELECT * FROM `backlinqs_links` WHERE ( Content LIKE '%$keywords%' OR Title LIKE '%$keywords%' )");
+        return $this->DatabaseConnection->query("SELECT * FROM `backlinqs_links` WHERE ( Content LIKE '%$keywords%' OR Title LIKE '%$keywords%' ) ORDER  BY `backlinqs_links`.`Date` DESC");
     }
 
     public function UpdateUserInfoWithId($id)

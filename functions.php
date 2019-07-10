@@ -244,11 +244,9 @@ function GetAllPostTitles()
 
     foreach($selectAll as $item)
     {
-       // var_dump($item['Title']);
         array_push($PostTitlesArray, $item['Title']);
     }
 
-    //var_dump($PostTitlesArray);
     return $PostTitlesArray;
 
 }
@@ -318,13 +316,13 @@ function CreateNewUser($firstName, $lastName, $email, $passHash, $role)
            $newUserId = $each['ID'];
         }
         $query->InsertNewUserRole($newUserId, $role);
+
         $query->InsertNewUserInfoId($newUserId);
         $query->CloseConnection();
 
         $user = new Users(USER, PASS, CONNETIONSTRING);
 
         $user->VerifyEmail($email);
-
 
 }
 
@@ -355,8 +353,9 @@ function CheckForUniqueUserUponCreation($firstName, $lastName, $email, $passHash
 
             if($_SESSION['confirmPassword'] == $_SESSION['inputPassword'])
             {
+
                 CreateNewUser($firstName, $lastName, $email, $passHash, 5);
-                echo 'User Created';
+                //echo 'User Created';
                 session_destroy();
                 return false;
             }
@@ -365,10 +364,7 @@ function CheckForUniqueUserUponCreation($firstName, $lastName, $email, $passHash
                 session_destroy();
                 return true;
             }
-
-
         }
-
     }
     else {
         echo 'User Already Exists';

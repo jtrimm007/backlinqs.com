@@ -19,6 +19,11 @@ function StartApp()
     }
 
 
+    if(isset($_GET['fbclid']))
+    {
+        header("Location: https://backlinqs.com");
+        exit();
+    }
 
 
     //check if user wants to logout
@@ -49,14 +54,13 @@ function StartApp()
         }
     }
 
-    if($_SERVER['REQUEST_URI'] == '/new-user')
+    if($_SERVER['REQUEST_URI'] == '/verify-account' || $_SERVER['REQUEST_URI'] == '/new-user')
     {
         $_SESSION['firstName'] = $_POST['firstName'];
         $_SESSION['lastName'] = $_POST['lastName'];
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
         $_SESSION['inputPassword'] = $_POST['inputPassword'];
         $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
-
 
     }
 
@@ -110,6 +114,14 @@ function StartApp()
         }
 
     }
+    elseif(strpos($_SERVER['REQUEST_URI'], 'blog/') == true)
+    {
+        $permalink = str_replace("/blog/", "", $_SERVER['REQUEST_URI']);
+
+
+
+        $content = GetCurrentPageContentWithPermalink($permalink);
+    }
     else {
 
         $permalink = str_replace("/", "", $_SERVER['REQUEST_URI']);
@@ -131,8 +143,10 @@ function StartApp()
     }
 
 
+
     //Constructs the page
     $page = new PageConstruct($content);
+
 
 
 
@@ -140,7 +154,7 @@ function StartApp()
     CreateNewLInkPage();
 
 
-    CreateNewUserPage($page);
+    CreateNewUserPage();
 
 
     //returns a view of the page
@@ -195,12 +209,8 @@ function CreateNewLInkPage()
 
         if(CheckUserStatus($_COOKIE['user']) == true)
         {
-
-
             //Check current users post to make sure two pages are not created with the same title
             CheckCurrentUserLinkTitlesAndInsert($_COOKIE['user-id'],  $_POST['linkUrl'],  $_POST['linkDescription'], $_POST['linkTitle']);
-
-
         }
         else
         {
@@ -214,24 +224,22 @@ function CreateNewLInkPage()
     }
 }
 
-function CreateNewUserPage($page)
+function CreateNewUserPage()
 {
-    if($page->pageTitle == $page->newUserPageTitle)
+
+    if($_SERVER['REQUEST_URI'] == "/new-user" || $_SERVER['REQUEST_URI'] == "/verify-account")
     {
-
-
         $firstName = $_SESSION['firstName'];
         $lastName = $_SESSION['lastName'];
         $email = $_SESSION['inputEmail'];
         $pass = $_SESSION['inputPassword'];
 
-
         if($firstName != NULL && $lastName != NULL && $email != NULL && $pass != NULL)
         {
-            CheckForUniqueUserUponCreation($firstName, $lastName, $email, $pass);
+
+            $_SESSION['user-created'] = CheckForUniqueUserUponCreation($firstName, $lastName, $email, $pass);
 
         }
-
     }
 }
 
@@ -251,7 +259,6 @@ function VerifyLoginPage()
         if($isLoggedIn == true)
         {
             return true;
-
         }
         else
         {

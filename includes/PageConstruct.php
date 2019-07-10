@@ -16,6 +16,7 @@ public $currentUser;
 public $getLinksPageTitle;
 public $getLinkUrl;
 public $getLinkProviderEmail;
+public $getBlogPermalink;
 
 /**
  * PageConstruct constructor.
@@ -27,6 +28,7 @@ public function __construct($page)
     $this->pageTitle = $page[0]['Title'];
     $this->pageContent = html_entity_decode($page[0]['Content'], ENT_QUOTES);
     $this->getLinkUrl = $page[0]['LinkUrl'];
+    $this->getBlogPermalink = $page[0]['permalink'];
     if(isset($page[1]))
     {
         $this->getLinkProviderEmail = $page[1];
@@ -144,11 +146,11 @@ public function Body()
 
     <?php $this->Navigation(); ?>
     <?php
-    if(strpos($_SERVER['REQUEST_URI'], '/linq-browser/') !== false)
+    if(strpos($_SERVER['REQUEST_URI'], '/linq-browser/') !== false || strpos($_SERVER['REQUEST_URI'], '/blog/') !== false)
     {
         echo '<h1>'.$this->pageTitle.'</h1>';
-    } ?>
-    <?php
+    }
+
     if($this->pageTitle == "Request LinqExchange")
     {
 
@@ -171,12 +173,18 @@ public function Body()
     {
         if($_COOKIE['user'] == null || CheckUserStatusQuery($_COOKIE['user']) == 0)
         {
-            echo '<p>Please <a href="/login">login</a> or <a href="/new-user">setup</a> an account to submit links.</p>';
+            echo '<div class=\'container text-center mr-top-10 mr-bottom-10\'>
+<h3 class=\'p-2\'>Please <a href="/login">login</a> or <a href="/new-user">join us</a> to submit Linq Opportunities.</h3>
+</div>';
         }
         else
         {
             echo $this->pageContent;
         }
+    }
+    elseif ($this->pageTitle == "Blog")
+    {
+        echo $this->Blog();
     }
     else
     {
@@ -190,7 +198,10 @@ public function Body()
     {
         if($_COOKIE['user'] == null || CheckUserStatusQuery($_COOKIE['user']) == 0)
         {
-            echo '<p>Please login or setup and account to request links.</p>';
+            echo '<div class=\'container text-center mr-top-10 mr-bottom-10\'>
+<h2 class=\'p-2\'>Opps... You are not logged in...</h2>
+<p class=\'p-2\'>Please <a href="/login">login</a> or join Backlinqs to see linq exchange information. <br><a href=\'/new-user\' ><button class=\'mr-top-5 btn btn-primary\'>Join Backlinqs</button></a></p>
+</div>';
         }
         else{
 
@@ -211,6 +222,8 @@ public function Body()
 
         <?php               }
     }
+
+
 
 
     ?>
@@ -442,7 +455,6 @@ public function GetLinkInformationFromDatabasePermalink()
         array_push($resultsArray, $result);
     }
 
-    //var_dump($resultsArray[0]['Title']);
 
     if(isset($resultsArray[0]['Title']))
     {
@@ -468,7 +480,10 @@ public function GetLinkInformationFromDatabasePermalink()
         echo '</ul>';
     }
     else{
-        echo "<p>There are no results for that keyword. Be the first to submit a linq! <a href='/submit-links'>Start Here</a>! </p>";
+        echo "<div class='container text-center mr-top-10 mr-bottom-10'>
+<h2 class='p-2'>Currently no Linq Opportunities for the keyword ". $_SESSION['linqSearch']  . ".</h2>
+<p class='p-2'>Be the first to submit a Linq Opportunity for the keyword ".$_SESSION['linqSearch']."! <br><a href='/submit-links' class=''><button class='mr-top-5 btn btn-primary'>Start Here</button></a></p>
+</div>";
     }
 
     $query->CloseConnection();
@@ -538,7 +553,7 @@ public function Login($loginPage)
 public function HomePage()
 {
     $loginUri = "/?status=true&user=".$_COOKIE['user']."";
-    $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for available backlinqs....' required><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
+    $linqBrowser = "<form method='get' class='linq-search-form'><input name='linqSearch' class='linq-search-input col-sm-11' type='text' placeholder='search for backlinq opportunities....' required><button class='btn col-sm-1' type='submit'>GO</button></form><br>";
 
     if($_SERVER['REQUEST_URI'] == "/" || $_SERVER['REQUEST_URI'] == $loginUri)
     {
@@ -558,6 +573,40 @@ public function HomePage()
         }
 
     }
+}
+
+private function PostListForBlog()
+{
+    $database = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+    $results = $database->SelectAllBlogPost();
+
+
+    $stringAppend = '';
+
+    foreach ($results as $result)
+    {
+        $author = $database->SelectAllCurrentUserWithId($result['UserId']);
+
+        $name = '';
+        foreach ($author as $each)
+        {
+            $name = $each['FirstName'] . ' ' . $each['LastName'];
+        }
+
+        $stringAppend .= "<div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
+            <div class=\"col p-4 flex-column position-static\">
+              <h3 class=\"mb-0\">".$result['Title']."</h3>
+              <div class=\"mb-1 text-muted\">".$result['DateCreated']."</div>
+              <p class=\"card-text \">Author ".$name." </p>
+              <a href=\"/blog/".$result['permalink']."\" class=\"stretched-link\"  >view blog</a>
+            </div>
+          </div>";
+
+    }
+
+    $database->CloseConnection();
+    return $stringAppend;
 }
 
 private function PostListForDashboard()
@@ -767,7 +816,9 @@ public function Dashboard()
         }
         else
         {
-            return $this->pageContent = '<h3>Please <a href="/login">login</a> to access dashboard.</h3>';
+            return $this->pageContent = '<div class=\'container text-center mr-top-10 mr-bottom-10\'>
+<h3 class=\'p-2\'>Please <a href="/login">login</a> to access the dashboard.</h3>
+</div>';
         }
     }
 }
@@ -884,6 +935,41 @@ public function Profile()
         $database->CloseConnection();
 
         return $form;
+    }
+
+}
+
+public function Blog()
+{
+
+    $postBlogList = $this->PostListForBlog();
+
+    $dynamicMenu = "
+            <ul class='list-unstyled'>
+              <li><a href=\"/\" >Home</a></li>
+
+           </ul>";
+
+    if($_SERVER['REQUEST_URI'] == '/blog')
+    {
+        return "
+ <div class=\"row mb-2\">
+    <div class=\"col-sm-2 ml-sm-0 ml-md-5\">
+      <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative\">
+        <div class=\"col p-4 d-flex flex-column position-static\">
+            ".$dynamicMenu."
+        </div>
+      </div>
+    </div>
+        <div class=\"col-md-9\">
+              <div class=\"row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm  position-relative\">
+        <div class=\"col p-4 d-flex flex-column position-static\">
+        ".$this->pageContent."<br>".$postBlogList."
+        </div>
+        </div>
+        </div>
+
+  </div>";
     }
 
 }
