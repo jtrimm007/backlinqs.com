@@ -14,7 +14,7 @@ foreach ($links as $link)
 {
    $dateTimeArray = date_parse($link['Date']);
    $dateString = $dateTimeArray['year']."-".$dateTimeArray['month']."-".$dateTimeArray['day'];
-    echo '<url><loc>https://backlinqs.com/linq-browser/'.$link['permalink'].'</loc><lastmod>'.$dateString.'</lastmod><changefreq>monthly</changefreq></url>';
+    echo '<url><loc>https://backlinqs.com/linq-browser/'.$link['permalink'].'</loc><lastmod>'.date("Y-m-d", strtotime($dateString)).'</lastmod><changefreq>monthly</changefreq></url>';
 }
 
 foreach ($posts as $post)
@@ -24,12 +24,12 @@ foreach ($posts as $post)
 
     if($post['post-type'] == "page")
     {
-        echo '<url><loc>https://backlinqs.com/'.$post['permalink'].'</loc><lastmod>'.$dateString.'</lastmod><changefreq>monthly</changefreq></url>';
+        echo '<url><loc>https://backlinqs.com/'.$post['permalink'].'</loc><lastmod>'.date("Y-m-d", strtotime($dateString)).'</lastmod><changefreq>monthly</changefreq></url>';
 
     }
     else
     {
-        echo '<url><loc>https://backlinqs.com/blog/'.$post['permalink'].'</loc><lastmod>'.$dateString.'</lastmod><changefreq>monthly</changefreq></url>';
+        echo '<url><loc>https://backlinqs.com/blog/'.$post['permalink'].'</loc><lastmod>'.date("Y-m-d", strtotime($dateString)).'</lastmod><changefreq>monthly</changefreq></url>';
     }
 }
 
