@@ -1,5 +1,6 @@
 <IfModule mod_rewrite.c>
 RewriteEngine On
+RewriteRule ^sitemap\.xml$ sitemap.php [L]
 RewriteBase /
 RewriteCond %{HTTPS} !on
 RewriteCond %{REQUEST_URI} !^/[0-9]+\..+\.cpaneldcv$
@@ -9,6 +10,8 @@ RewriteRule ^index\.php$ - [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule . /index.php [L]
+
+
 
 
 

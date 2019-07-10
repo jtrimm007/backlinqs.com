@@ -175,6 +175,32 @@ function GetPostInfoFromDatabase()
 
 }
 
+function SelectAllLinksFromDatabase()
+{
+
+    $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+    $results = $query->SelectAll('backlinqs_links');
+
+    $query->CloseConnection();
+
+    return $results;
+
+}
+
+function SelectAllPostFromDatabase()
+{
+
+    $query = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+    $results = $query->SelectAll('backlinqs_post');
+
+    $query->CloseConnection();
+
+    return $results;
+
+}
+
 /**
  * Description: Inserts a post into the database
  * @param $currentUser
