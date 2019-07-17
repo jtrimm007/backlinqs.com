@@ -1,0 +1,9 @@
+# Rule 1
+User-agent: *
+Disallow: /dashboard/
+
+# Rule 2
+User-agent: *
+Allow: /
+
+Sitemap: https://backlinqs.com/sitemap.xml

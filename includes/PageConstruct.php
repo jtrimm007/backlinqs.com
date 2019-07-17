@@ -62,6 +62,9 @@ public function Head()
 ?><!doctype html>
 <html lang="en">
 <head>
+
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-142406044-1"></script>
     <script>
@@ -294,6 +297,7 @@ public function Footer()
     <p>
         <a href="#">Back to top</a>
     </p>
+    <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.
 </footer>
     <?php
 }
