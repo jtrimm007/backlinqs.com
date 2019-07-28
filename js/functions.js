@@ -52,3 +52,68 @@ function getUrlPathName()
 
     return removeGetLinks;
 }
+
+
+function lazyLoading()
+{
+
+    $(document).ready(function(){
+        var limit = 4;
+        var start = 0;
+        var action = 'inactive';
+
+        function load_link_data(limit, start)
+        {
+            $.ajaxSetup({
+                async: true
+            });
+
+            $("#loader").addClass('sr-onl');
+
+            $.ajax({
+                url:"fetch.php",
+                method:"POST",
+                data:{limit:limit, start:start},
+                cache:false,
+                success:function(data)
+                {
+                    $('#load_data').append(data);
+
+                    if(data === '')
+                    {
+                        $("#pleaseWait").addClass('d-none');
+                        $('#load_data_message').html("<button type='button' class='btn btn-info'>No data found</button>");
+                        action = 'active';
+                    }
+                    else
+                    {
+                        $("#pleaseWait").addClass('d-none');
+
+                        $('#load_data_message').html(" <div class='text-center'> <button type='button' class='btn text-center btn-info'>Loading, please wait...</button></div>");
+                        action = 'inactive';
+                    }
+                }
+            });
+        }
+
+        if(action === 'inactive')
+        {
+            action = 'active';
+            load_link_data(limit, start);
+        }
+
+        $(window).scroll(function(){
+            console.log($(window).scrollTop() + $(window).height());
+            console.log($("#load_data").height());
+            if(($(window).scrollTop() + $(window).height() > $("#load_data").height()) && action === 'inactive')
+            {
+                action = 'active';
+                start = start + limit;
+                console.log(start);
+                setTimeout(function(){
+                    load_link_data(limit, start);
+                }, 1000);
+            }
+        });
+    });
+}

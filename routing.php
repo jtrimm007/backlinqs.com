@@ -95,6 +95,35 @@ function StartApp()
         $permalink = str_replace("/linq-browser/", "", $_SERVER['REQUEST_URI']);
         $content = GetCurrentLinkPageContentWithPermalink($permalink);
 
+        if($content == null)
+        {
+
+            $url = str_replace("/linq-browser/", "", $_SERVER['REQUEST_URI']);
+
+            $search = new GoogleSearch();
+
+            $urlInfo = $search->GetUrlInformationNoneArray($url);
+
+            $selectEmail = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+
+            $email = $selectEmail->SelectEmailFromScrap($url);
+
+            $pulledEmail = '';
+           foreach($email as $each)
+           {
+              //var_dump($each);
+               $pulledEmail = $each["email"];
+           }
+            $content = array(
+                    array(
+                            "Title" => $urlInfo[0],
+                        "LinkUrl" => $urlInfo[2],
+                        "Content" => $urlInfo[1]
+
+                    ),
+                $pulledEmail
+            );
+        }
         //$content = html_entity_decode($content);
     }
     elseif (strpos($_SERVER['REQUEST_URI'], 'dashboard/') == true)

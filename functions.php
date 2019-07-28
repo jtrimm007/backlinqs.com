@@ -2,7 +2,6 @@
 
 include 'config.php';
 
-
 foreach ( glob("includes/*.php") as $file)
 {
     include_once $file;

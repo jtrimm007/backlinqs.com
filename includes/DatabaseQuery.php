@@ -325,4 +325,15 @@ class DatabaseQuery extends DatabaseConnection
         $stmt= $this->DatabaseConnection->prepare($sql);
         $stmt->execute([$company, $facebook, $youtube, $instagram, $phone, $about, $id]);
     }
+
+    public function LazyLoadQuery($start, $limit)
+    {
+        return $this->DatabaseConnection->query("SELECT * FROM `backlinqs_scrap` LIMIT ".$start.", ". $limit." ");
+
+    }
+    public function SelectEmailFromScrap($url)
+    {
+        return $this->DatabaseConnection->query("SELECT `email` FROM `backlinqs_scrap` WHERE url = '$url' ");
+
+    }
 }
