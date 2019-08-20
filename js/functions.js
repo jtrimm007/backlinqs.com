@@ -52,6 +52,38 @@ function getUrlPathName()
 
     return removeGetLinks;
 }
+function check_radio(element_id){
+    document.getElementById(element_id).checked = true;
+}
+function questionnaire()
+{
+
+    $(document).ready(function () {
+
+
+
+        $("input#firstQuestionButton").click(function(){
+            $("#firstQuestion").fadeOut(300);
+            $("#firstQuestion").css('display', 'none');
+            $("#secondQuestion").fadeIn(3000);
+        });
+
+        $("input#secondQuestionButton").click(function(){
+            $("#secondQuestion").fadeOut(300);
+            $("#thirdQuestion").fadeIn(3000);
+        });
+
+        $("input#thirdQuestionButton").click(function(){
+            $("#thirdQuestion").fadeOut(300);
+            $("#fourthQuestion").fadeIn(3000);
+        });
+
+        $("input#fourthQuestionButton").click(function(){
+            $("#fourthQuestion").fadeOut(300);
+            $("#fifthQuestion").fadeIn(3000);
+        });
+    });
+}
 
 
 function lazyLoading()

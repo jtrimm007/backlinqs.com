@@ -25,7 +25,6 @@ function StartApp()
         exit();
     }
 
-
     //check if user wants to logout
     LogOutUserAndRedirectToHome();
 
@@ -59,6 +58,16 @@ function StartApp()
         $_SESSION['firstName'] = $_POST['firstName'];
         $_SESSION['lastName'] = $_POST['lastName'];
         $_SESSION['inputEmail'] = $_POST['inputEmail'];
+        $_SESSION['inputPassword'] = $_POST['inputPassword'];
+        $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
+    }
+
+    if($_SERVER['REQUEST_URI'] == '/backlink-qualifier' || $_SERVER['REQUEST_URI'] == '/verify-account')
+    {
+        $_SESSION['website'] = $_POST['website'];
+        $_SESSION['inputEmail'] = $_POST['email'];
+        $_SESSION['gb'] = $_POST['gb'];
+        $_SESSION['bl'] = $_POST['bl'];
         $_SESSION['inputPassword'] = $_POST['inputPassword'];
         $_SESSION['confirmPassword'] = $_POST['confirmPassword'];
 
@@ -256,18 +265,33 @@ function CreateNewLInkPage()
 function CreateNewUserPage()
 {
 
-    if($_SERVER['REQUEST_URI'] == "/new-user" || $_SERVER['REQUEST_URI'] == "/verify-account")
+    if($_SERVER['REQUEST_URI'] == "/new-user" || $_SERVER['REQUEST_URI'] == "/verify-account" || $_SERVER['REQUEST_URI'] == "/backlink-qualifier")
     {
         $firstName = $_SESSION['firstName'];
         $lastName = $_SESSION['lastName'];
         $email = $_SESSION['inputEmail'];
         $pass = $_SESSION['inputPassword'];
+        $website = $_SESSION['website'];
+        $guestBlogger = $_SESSION['gb'];
+        $linkExchanger = $_SESSION['bl'];
+
 
         if($firstName != NULL && $lastName != NULL && $email != NULL && $pass != NULL)
+        {
+            $_SESSION['user-created'] = CheckForUniqueUserUponCreation($firstName, $lastName, $email, $pass);
+            session_destroy();
+        }
+        elseif ($website != NULL && $guestBlogger != NULL && $email != NULL && $pass != NULL && $linkExchanger != NULL)
         {
 
             $_SESSION['user-created'] = CheckForUniqueUserUponCreation($firstName, $lastName, $email, $pass);
 
+            $userId = getUserId($email);
+            $conn = new DatabaseQuery(USER, PASS, CONNETIONSTRING);
+            $conn->InsertYesOrNoLeGb($website, $linkExchanger, $guestBlogger, $userId);
+
+
+            session_destroy();
         }
     }
 }

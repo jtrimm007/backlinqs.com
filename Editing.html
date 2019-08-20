@@ -107,5 +107,65 @@
     </div>
 </div>
 
+
+<div class="container-fluid align-self-center  col-sm-4 mr-top-5 mr-bottom-5 text-center">
+    <h1>Let's Get Started</h1>
+    <p>To make sure the program works correctly, please answer the following:</p>
+    <form method="post" class="form-signin form-group">
+
+        <div id="firstQuestion">
+            <p>What is the website, or web page, you would like to generate quality backlinks for?</p>
+            <input name="website" type="url" id="website" class="form-control input-form-boxes" placeholder="please enter a valid URL" required="">
+
+            <input class="btn btn-primary" id="firstQuestionButton" type="button" value="next">
+        </div>
+
+        <div id="secondQuestion" style="display: none;">
+            <p>What is the best email to contact you?</p>
+            <input name="email" type="email" id="email" class="form-control input-form-boxes" placeholder="contact email"
+                   required="">
+
+            <input class="btn btn-primary" id="secondQuestionButton" type="button" value="next">
+        </div>
+
+        <div id="thirdQuestion" style="display: none;">
+            <p>Are you interested in guest blogging on someone else's website to create backlinks?</p>
+            <input type="radio" id="yesGb" name="yes" > <label for="yesGb">Yes</label><br>
+            <input  type="radio" id="noGb" name="no"> <label for="noGb">No</label> <br>
+            <input class="btn btn-primary" id="thirdQuestionButton" type="button" value="next">
+        </div>
+
+        <div id="fourthQuestion" style="display: none;">
+            <p>Are you willing to give a backlink to get a backlink?</p>
+            <input type="radio" id="yesBl" name="yes"> <label for="yesBl">Yes</label> <br>
+            <input type="radio" id="noBl" name="no"> <label for="noBl">No</label> <br>
+
+
+            <div class="row">
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-primary float-right">Finish</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="fifthQuestion" style="display: none;">
+            <p>Please enter a password you would like to associate with your account.</p>
+            <input type="password" id="inputPassword" name="inputPassword" placeholder="Create Password"> <br>
+
+
+
+            <div class="row">
+                <div class="col-sm">
+                    <button type="submit" class="btn btn-primary float-right">Finish</button>
+                </div>
+            </div>
+        </div>
+
+
+    </form>
+</div>
+
+
+
 </body>
 </html>

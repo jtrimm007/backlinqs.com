@@ -89,7 +89,7 @@ public function Head()
     echo $this->GetCSS(); ?>
 
 
-    <?php echo "<meta name=\"description\" content=\"" . $this->PageTitle() . "\">";
+    <?php echo "<meta name=\"description\" content=\"" . $this->PageTitle() . " - Tools for build backlinks and guest blogging\">";
 
     //Editor scripts
     if ($this->pageTitle == 'Create Post' || $this->pageTitle == 'Submit Links' || $this->pageTitle == 'Request LinqExchange' || isset($_GET['post'])) {
@@ -297,6 +297,14 @@ public function Navigation()
     <div class="container nav-scroller py-1 mb-2 mt-lg-5 mt-sm-3">
         <nav class="nav d-flex justify-content-between" itemscope
              itemtype="http://www.schema.org/SiteNavigationElement">
+            <script>
+                if (readCookie('status') === 'true') {
+                    //console.log(readCookie('status'));
+                    //document.write('<a class="text-muted d-flex justify-content-center justify-content-lg-end" href="/dashboard"><?php //echo $_COOKIE['user']; ?>//</a>');
+                } else {
+                    document.write('<a class="text-muted p-2 " href="/bbacklink-qualifier">get started</a>');
+                }
+            </script>
             <a itemprop="url" class="p-2 text-muted" href="/about"><span itemprop="name">about</span></a>
             <a itemprop="url" class="p-2 text-muted" href="/how-it-works"><span itemprop="name">how it works</span></a>
             <a itemprop="url" class="p-2 text-muted" href="/contact"><span itemprop="name">contact</span></a>
@@ -737,7 +745,9 @@ public function Dashboard()
                     }
 
 
-                    $insert = $database->UpdatePost($_POST['title'], (string)$_POST['content'], $_POST['permalink'], $_POST['type'], $getPostId);
+                    $content = addslashes ($_POST['content']);
+
+                    $insert = $database->UpdatePost($_POST['title'], $content, $_POST['permalink'], $_POST['type'], $getPostId);
 
                     $database->CloseConnection();
                 }

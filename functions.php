@@ -378,15 +378,19 @@ function CheckForUniqueUserUponCreation($firstName, $lastName, $email, $passHash
 
             if($_SESSION['confirmPassword'] == $_SESSION['inputPassword'])
             {
-
+                if($firstName == NULL || $lastName == NULL)
+                {
+                    $firstName = '';
+                    $lastName = '';
+                }
                 CreateNewUser($firstName, $lastName, $email, $passHash, 5);
                 //echo 'User Created';
-                session_destroy();
+//                session_destroy();
                 return false;
             }
             else{
                 echo 'Confirm password and password must match! Please try again.';
-                session_destroy();
+//                session_destroy();
                 return true;
             }
         }
@@ -526,4 +530,18 @@ function CheckUserInfoTable($id)
 
 
 
+}
+
+function getUserId($email)
+{
+    $user = new Users(USER, PASS, CONNETIONSTRING);
+
+    $id = $user->GetCurrentUserId($email);
+
+    foreach ($id as $item)
+    {
+        $id = $item['ID'];
+    }
+
+    return $id;
 }

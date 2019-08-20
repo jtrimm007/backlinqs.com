@@ -336,4 +336,12 @@ class DatabaseQuery extends DatabaseConnection
         return $this->DatabaseConnection->query("SELECT `email` FROM `backlinqs_scrap` WHERE url = '$url' ");
 
     }
+
+    public function InsertYesOrNoLeGb($website, $le, $gl, $userId)
+    {
+
+        $sql = "UPDATE backlinqs_user_info SET  Website = '$website', link_exchange = '$le', guest_blogger = '$gl'  WHERE UserID = '$userId'";
+        $stmt= $this->DatabaseConnection->prepare($sql);
+        $stmt->execute([$website, $le, $gl, $userId]);
+    }
 }
